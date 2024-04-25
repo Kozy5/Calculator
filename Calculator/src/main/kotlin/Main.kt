@@ -6,6 +6,7 @@ fun main(args: Array<String>) {
 
         var checkFirstNumber = false
         var firstNumber = 0L
+
         while(!checkFirstNumber) {
             println("연산할 첫번째 숫자를 입력해주세요")
             val firstNumberInput = readln().toLongOrNull()
@@ -20,6 +21,7 @@ fun main(args: Array<String>) {
 
         var checkSecondNumber = false
         var secondNumber = 0L
+
         while(!checkSecondNumber) {
             println("연산할 두번째 숫자를 입력해주세요")
             val secondNumberInput = readln().toLongOrNull()
@@ -158,18 +160,18 @@ class MinusOperation : AbstractOperation() {
 
 class MultiplyOperation : AbstractOperation() {
     override fun operate(num1: Long, num2: Long) {
-        println("${num1} 곱하기 ${num2}은(는) ${num1-num2}입니다." )
+        println("${num1} 곱하기 ${num2}은(는) ${num1*num2}입니다." )
     }
 }
 
 class DivideOperation : AbstractOperation() {
     override fun operate(num1:Long,num2: Long) {
-        println("${num1}를(을) ${num2}로(으로) 나누면 몫은 ${num1-num2} 입니다." )
+        println("${num1}를(을) ${num2}로(으로) 나누면 몫은 ${num1/num2} 입니다." )
     }
 }
 
 class RemainderOperation : AbstractOperation() {
     override fun operate(num1:Long,num2:Long) {
-        println("${num1}를(을) ${num2}로(으로) 나누면 나머지는 ${num1-num2} 입니다." )
+        println("${num1}를(을) ${num2}로(으로) 나누면 나머지는 ${num1%num2} 입니다." )
     }
 }
