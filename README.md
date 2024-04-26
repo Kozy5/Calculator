@@ -98,4 +98,147 @@
 계산 종료를 원하시면 아무거나 입력해주세요
 ```
 
+## 코드 구조
 
+클래스는 `AbstractOperation`1개의 추상 클래스와 상속 받는 `Plus,Minus,Multiply, Divide,Remainder ` 5개의 클래스로 나뉩니다.
+
+- `AbstractOperation`
+  : 추상 클래스로 이 클래스를 수퍼 클래스로 상속 받은 클래스들은 모두 oprate를 구현하도록 했습니다.
+```kotlin
+abstract class AbstractOperation {
+    abstract fun operate(num1: Long, num2: Long)
+}
+```
+- `Plus, Minus, Multiply, Divide, Remainder`
+  : 추상 클래스를 상속 받고 상속 받은 추상 함수를 각 클래스 별 성격에 맞게 구현하였습니다.
+```kotlin
+class PlusOperation : AbstractOperation() {
+    override fun operate(num1: Long, num2: Long) {
+        println("${num1} 더하기 ${num2}은(는) ${num1 + num2}입니다.")
+    }
+}
+```
+
+## 예외 처리 <br/>
+※ try,catch가 미숙하여 조건문으로 예외처리를 시도했습니다. <br/>
+### 1. readln() / 입력값 예외 처리 <br/>
+
+#### 1-1 readln().toLongOrNull()
+- 입력 별 원하는 데이터만 받기 위해 숫자 입력 부분에서는 `readln().toLongOrNull()`을 사용했습니다.
+- 이유 1 `toLongOrNull()`은 <br/> `null` 그 자체뿐 아니라
+받아온 데이터가 Long형으로 형 변환이 불가하면 <br/>
+`null`을 리턴 해주기에 `null`에 대해서 예외처리 진행 시 많은 부분이 커버 되었기에 선택했습니다.
+
+```kotlin
+
+            println("연산할 첫번째 숫자를 입력해주세요")
+            val firstNumberInput = readln().toLongOrNull()
+
+            if (firstNumberInput == null) {
+                println("숫자를 입력 해주셔야 합니다.")
+            }
+            ~
+```
+
+#### 1-2 그 외 입력값 예외처리 / while문 관련
+- 각 입력 받는 부분마다 프로그램이 종료되지않고 예외처리를 하기 위해
+while문을 사용해봤습니다
+- 각 while문의 조건을 담당하는 check ~ 변수를 생성
+- 기본값을 false로 주어 검사 후 반복문을 시작
+- 요구하는 데이터가 들어올 시 while조건을 담당하는 변수를 true로 바꾸어 반복문을 빠져나간다.<br/>
+  <ins> 따라서 요구하는 데이터 타입 이 외에 것을 입력 시 해당 입력 요청을 계속 반복합니다. </ins>
+
+```kotlin
+
+        var checkFirstNumber = false
+        
+        while (!checkFirstNumber) {
+            println("연산할 첫번째 숫자를 입력해주세요")
+            val firstNumberInput = readln().toLongOrNull()
+
+            if (firstNumberInput == null) {
+                println("숫자를 입력 해주셔야 합니다.")
+            } else {
+                checkFirstNumber = true
+            }
+        }
+```
+### 2. 0 나눗셈 예외처리 <br/>
+※ 첫번째 숫자 두번째 숫자의 크고 작음을 조건문을 통해 비교 후 true,false에 따라 조건문이 진행되는 방식을 선택했습니다.
+#### 2-1 두번째 숫자가 0일 때
+- 예를 들어 첫번째 숫자는 0을 초과하는 임의의 정수이고<br/>
+  두번째 숫자가 0일 때 나누기를 시도한다면 <br/>
+  두번째 숫자가 0인 상태에서 나누기를 진행 할 수없으니<br/>
+  <ins>연산 방법 선택을 다시 요청합니다.</ins>
+
+```kotlin
+             if (firstNumber >= secondNumber){
+
+
+                              ~
+              else if (secondNumber == 0L && selectCalculationMethod == "4") {
+                    println("두번째 숫자가 0인 상태에서 나누기를 진행 할 수없습니다.")
+                    println("다시 입력해주세요!")
+                    println("-----------------------------------------------")
+                }else if (secondNumber == 0L && selectCalculationMethod == "5") {
+                    println("두번째 숫자가 0인 상태에서 나누기를 진행 할 수없습니다.")
+                    println("다시 입력해주세요!")
+                    println("-----------------------------------------------")
+                }
+
+                              ~
+
+            }
+```
+#### 2-2 첫번째 숫자가 0일 때
+- 반대로 <br/>
+  첫번째 숫자가 0이고<br/>
+  두번째 숫자가 0을 초과하는 임의의 정수일 때<br/>
+  나누기를 시도한다면 두번째 숫자가 0인 상태에서도 나누기를 진행 할 수 없으니<br/>
+  <ins>연산 방법 선택을 다시 요청합니다.</ins>
+
+```kotlin
+             if (firstNumber >= secondNumber){
+
+
+                              ~
+              else if (secondNumber == 0L && selectCalculationMethod == "4") {
+                    println("첫번째 숫자가 0인 상태에서 나누기를 진행 할 수없습니다.")
+                    println("다시 입력해주세요!")
+                    println("-----------------------------------------------")
+                }else if (secondNumber == 0L && selectCalculationMethod == "5") {
+                    println("첫번째 숫자가 0인 상태에서 나누기를 진행 할 수없습니다.")
+                    println("다시 입력해주세요!")
+                    println("-----------------------------------------------")
+                }
+
+                              ~
+
+            }
+```
+### 3. 큰 숫자에서 작은 숫자를 나눌때(실수) 예외처리 <br/>
+
+#### 3-1 ex) 5를 10으로 나누기
+- 5를 10으로 나누면 0.5와 같이 실수형으로 나타낼 수 있는데<br/>
+해당 계산기에서는 정수만을 취급하기에 0을 리턴한다고 안내 후<br/>
+<ins>다음 구문으로 넘어가도록 했습니다.(추가 반복 X)<ins>
+
+```kotlin
+             if (firstNumber >= secondNumber){
+
+
+                              ~
+              else if (selectCalculationMethod == "4") {
+                    println("이 계산기는 정수만 취급하기에 큰 숫자에서 작은 숫자를 나누면 0을 리턴합니다.")
+                    checkSelectionMethod = true
+                }else if (selectCalculationMethod == "5") {
+                    println("이 계산기는 정수만 취급하기에 큰 숫자에서 작은 숫자를 나누면 0을 리턴합니다.")
+                    checkSelectionMethod = true
+                }
+
+                              ~
+
+            }
+```
+- 해당 입력값의 while문 반복 조건 변수인 checkSelectionMethod를 true로 바꾸면서 <br/>
+더이상 반복하지 않고 다음 구문으로 넘어가는 것을 알 수 있습니다.
