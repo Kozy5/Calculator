@@ -109,7 +109,9 @@ abstract class AbstractOperation {
 }
 ```
 - `Plus, Minus, Multiply, Divide, Remainder`
-  : 추상 클래스를 상속 받고 상속 받은 추상 함수를 각 클래스 별 성격에 맞게 구현하였습니다.
+  : 추상 클래스를 상속 받고 상속 받은 추상 함수를 각 클래스 별 성격에 맞게 구현하였습니다.<br/>
+
+  [PlusOpearation Class 예시]
 ```kotlin
 class PlusOperation : AbstractOperation() {
     override fun operate(num1: Long, num2: Long) {
